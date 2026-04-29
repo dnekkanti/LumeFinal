@@ -1,6 +1,31 @@
+# Reflex
 .web
-*.py[cod]
-*.db
 .states
 assets/external/
+
+# Python
+*.py[cod]
 __pycache__/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Database
+*.db
+*.sqlite
+
+# Secrets / config
+.env
+.env.*
+config.toml
+
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
