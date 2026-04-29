@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lume — Light Redesign Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:linear-gradient(145deg,#f0ebff 0%,#f8f0ff 50%,#fdeeff 100%);
+  min-height:100vh; overflow:hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:60px;
+  background:linear-gradient(90deg,#ffffff 60%,#fdf4ff 100%);
+  box-shadow:0 1px 0 #ede8f8;
+  display:flex; align-items:center; padding:0 20px; gap:12px;
+  position:relative; z-index:10;
+}
+.logo{
+  font-size:20px; font-weight:800;
+  background:linear-gradient(135deg,#7030c8,#d040a0);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; letter-spacing:-0.5px;
+  flex-shrink:0;
+}
+.topbar-divider{width:1px;height:18px;background:#ede8f0;flex-shrink:0;}
+.project-btn{
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,#f0e8ff,#fde0f8);
+  border:none; border-radius:9px; padding:0 12px; height:32px;
+  cursor:pointer; font-size:13px; font-weight:600; color:#7030c8;
+  font-family:inherit;
+}
+.project-btn svg{opacity:0.6;}
+.topbar-tabs{display:flex; align-items:center; gap:0; margin-left:12px;}
+.tab-btn{
+  background:none; border:none; cursor:pointer; font-family:inherit;
+  font-size:14px; font-weight:500; color:#9878c8;
+  padding:0 16px; height:60px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:0; position:relative; transition:color 0.15s;
+}
+.tab-btn.active{
+  color:#7030c8; font-weight:700;
+}
+.tab-btn.active::after{
+  content:''; position:absolute; bottom:0; left:16px; right:16px;
+  height:2.5px; border-radius:2px;
+  background:linear-gradient(90deg,#7030c8,#c040a0);
+}
+.tab-btn:hover{color:#7030c8;}
+.topbar-right{margin-left:auto; display:flex; align-items:center; gap:8px;}
+.synced-badge{
+  display:flex; align-items:center; gap:5px;
+  background:linear-gradient(135deg,#e8f7c8,#c8f098);
+  border:none; border-radius:20px; padding:4px 12px;
+  font-size:12px; font-weight:700; color:#4a7010;
+}
+.synced-dot{width:6px;height:6px;border-radius:50%;background:#4a7010;}
+.new-btn{
+  background:linear-gradient(135deg,#f0e8ff,#fde0f8);
+  border:none; border-radius:9px; padding:0 14px; height:32px;
+  font-size:13px; font-weight:600; color:#7030c8; cursor:pointer;
+  font-family:inherit;
+}
+.export-btn{
+  background:linear-gradient(135deg,#9030e8,#d040b0);
+  border:none; border-radius:9px; padding:0 16px; height:32px;
+  font-size:13px; font-weight:700; color:#fff; cursor:pointer;
+  font-family:inherit;
+}
+
+/* ── LAYOUT ── */
+.layout{display:flex; height:calc(100vh - 60px); overflow:hidden;}
+
+/* ── LEFT PANEL ── */
+.left-panel{
+  width:300px; flex-shrink:0;
+  background:rgba(255,255,255,0.6);
+  display:flex; flex-direction:column;
+  padding:16px; gap:12px; overflow:hidden;
+}
+.panel-title{
+  font-size:18px; font-weight:700; color:#2d0f60;
+}
+.clips-count{font-size:12px; color:#9878c8; font-weight:500;}
+.search-bar{
+  display:flex; align-items:center; gap:8px;
+  background:#ffffff;
+  box-shadow:0 2px 14px rgba(140,60,200,0.10);
+  border:none; border-radius:9px; height:36px; padding:0 12px;
+}
+.search-bar input{
+  border:none; outline:none; font-size:14px; color:#2d0f60;
+  background:transparent; width:100%; font-family:inherit;
+}
+.search-bar input::placeholder{color:#b090d8;}
+.search-bar svg{color:#b090d8; flex-shrink:0;}
+
+/* Filter rows */
+.filter-row{display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.filter-label{font-size:12px; color:#9878c8; width:46px; flex-shrink:0; font-weight:500;}
+.pill{
+  background:linear-gradient(135deg,#ede8ff,#fde8f8);
+  border:none; border-radius:20px; padding:4px 12px;
+  font-size:12px; font-weight:500; color:#7050a8; cursor:pointer;
+  font-family:inherit; white-space:nowrap;
+}
+.pill.active{
+  background:linear-gradient(135deg,#8030d0,#c040b0);
+  color:#ffffff; font-weight:600;
+}
+
+/* Score slider */
+.score-row{display:flex; align-items:center; gap:8px;}
+.score-label{font-size:11px; font-weight:700; color:#9878c8; letter-spacing:0.05em;}
+.score-val{font-size:16px; font-weight:700; color:#2d0f60; margin-left:auto;}
+.slider-track{
+  width:100%; height:4px; border-radius:99px;
+  background:rgba(160,80,220,0.2); position:relative;
+}
+.slider-fill{height:100%; width:0%; background:linear-gradient(90deg,#9030d0,#e040c0); border-radius:99px;}
+input[type=range]{
+  width:100%; accent-color:#9030d0;
+}
+
+/* Clip grid */
+.clip-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  overflow-y:auto; flex:1; padding-right:2px;
+}
+.clip-card{
+  background:#ffffff;
+  box-shadow:0 4px 18px rgba(120,50,200,0.10);
+  border-radius:12px; overflow:hidden; cursor:pointer;
+  transition:transform 0.15s, box-shadow 0.15s;
+}
+.clip-card:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(120,50,200,0.16);}
+.clip-thumb{
+  width:100%; aspect-ratio:9/16; background:linear-gradient(145deg,#ede8ff,#fde0f8);
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.clip-thumb.land{aspect-ratio:16/9; background:linear-gradient(145deg,#edfad0,#d8f590);}
+.score-badge{
+  position:absolute; top:6px; right:6px;
+  background:linear-gradient(135deg,#9030d0,#d040b0);
+  color:#fff; font-size:11px; font-weight:700;
+  padding:2px 7px; border-radius:20px;
+}
+.score-badge.hi{background:linear-gradient(135deg,#a0d830,#78c010);}
+.clip-info{padding:7px 8px 8px;}
+.clip-name{font-size:12px; font-weight:600; color:#2d0f60; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.clip-dur{font-size:11px; color:#9878c8;}
+
+/* Run buttons */
+.run-bar{
+  display:flex; flex-direction:column; gap:6px;
+  padding-top:8px; border-top:none;
+}
+.run-btn{
+  border:none; border-radius:0; height:42px; cursor:pointer;
+  font-size:14px; font-weight:700; color:#fff; font-family:inherit;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.run-btn.librarian{background:linear-gradient(135deg,#a0d830,#70b010); border-radius:9px;}
+.run-btn.scout{background:linear-gradient(135deg,#9030d0,#d040b0); border-radius:9px;}
+
+/* ── CENTER PANEL ── */
+.center{
+  flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0;
+}
+.center-content{
+  flex:1; overflow-y:auto;
+  padding:20px; display:flex; flex-direction:column; gap:16px;
+}
+
+/* Thought stream log */
+.log-entry{display:flex; gap:10px; align-items:flex-start;}
+.agent-badge{
+  flex-shrink:0; border-radius:20px; padding:3px 10px;
+  font-size:11px; font-weight:700; color:#fff;
+}
+.agent-badge.librarian{background:linear-gradient(135deg,#a0d830,#70b010);}
+.agent-badge.scout{background:linear-gradient(135deg,#9030d0,#d040b0);}
+.agent-badge.colorist{background:linear-gradient(135deg,#f0a020,#e06010);}
+.log-text{font-size:13px; color:#706080; line-height:1.5; padding-top:2px;}
+.log-time{font-size:11px; color:#b090d8; margin-left:auto; flex-shrink:0; padding-top:3px;}
+
+.stream-empty{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; padding:48px 0; color:#b090d8;
+}
+.stream-empty svg{opacity:0.4;}
+
+/* ── RIGHT PANEL ── */
+.right-panel{
+  width:280px; flex-shrink:0;
+  background:linear-gradient(180deg,#ffffff 0%,#fdf8ff 100%);
+  box-shadow:-3px 0 20px rgba(120,50,200,0.06);
+  display:flex; flex-direction:column;
+  padding:16px; gap:14px; overflow:hidden;
+}
+
+/* Agent cards */
+.agent-cards{display:flex; flex-direction:column; gap:8px;}
+.agent-card{
+  border-radius:12px; padding:12px 14px;
+  display:flex; flex-direction:column; gap:6px;
+}
+.agent-card.librarian{background:linear-gradient(135deg,#edfad0,#d8f590);}
+.agent-card.scout{background:linear-gradient(135deg,#f0e0ff,#fdd8ff);}
+.agent-card.colorist{background:linear-gradient(135deg,#fff4cc,#ffe8a0);}
+.agent-card.architect{background:linear-gradient(135deg,#ffe0f0,#ffc8e8);}
+
+.agent-card-top{display:flex; align-items:center; justify-content:space-between;}
+.agent-card-name{font-size:14px; font-weight:700;}
+.agent-card-name.librarian{color:#3a6010;}
+.agent-card-name.scout{color:#5010a0;}
+.agent-card-name.colorist{color:#8a5000;}
+.agent-card-name.architect{color:#a00858;}
+
+.status-pill{
+  font-size:11px; font-weight:600; border-radius:20px; padding:2px 9px;
+  border:none; font-family:inherit;
+}
+.status-pill.idle{background:rgba(176,144,216,0.2); color:#b090d8;}
+.status-pill.running{background:rgba(96,32,184,0.15); color:#6020b8;}
+.status-pill.done{background:linear-gradient(135deg,#a0d830,#78c010); color:#fff;}
+
+.agent-desc{font-size:12px; color:#706080; line-height:1.4;}
+
+/* Progress bar */
+.progress-track{
+  height:4px; border-radius:99px;
+  background:rgba(160,80,220,0.2); overflow:hidden;
+}
+.progress-fill{
+  height:100%; border-radius:99px;
+  background:linear-gradient(90deg,#9030d0,#e040c0);
+  animation:progress-run 1.8s ease-in-out infinite;
+}
+@keyframes progress-run{
+  0%{width:0%;margin-left:0%;}
+  50%{width:60%;margin-left:20%;}
+  100%{width:0%;margin-left:100%;}
+}
+
+/* Timeline */
+.timeline-section{margin-top:4px;}
+.timeline-title{font-size:18px; font-weight:700; color:#2d0f60; margin-bottom:10px;}
+.commit-row{display:flex; gap:8px; align-items:flex-start; padding:6px 0;}
+.commit-dot{
+  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px;
+}
+.commit-info{flex:1; min-width:0;}
+.commit-msg{font-size:12px; color:#2d0f60; font-weight:500; line-height:1.4;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.commit-time{font-size:11px; color:#b090d8;}
+.commit-synced{font-size:10px; font-weight:700; color:#4a7010; flex-shrink:0; margin-top:2px;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px; height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(160,80,220,0.25); border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(160,80,220,0.45);}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="logo">Lume</span>
+  <div class="topbar-divider"></div>
+  <button class="project-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    yellow_copy
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+
+  <div class="topbar-tabs">
+    <button class="tab-btn active">Thought Stream</button>
+    <button class="tab-btn">Color Lab</button>
+    <button class="tab-btn">Summary</button>
+    <button class="tab-btn">🎵 Audio Lab</button>
+  </div>
+
+  <div class="topbar-right">
+    <div class="synced-badge">
+      <div class="synced-dot"></div>
+      Synced
+    </div>
+    <button class="new-btn">+ New</button>
+    <button class="export-btn">Export to FCP</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <span class="panel-title">Media Library</span>
+      <span class="clips-count">35 clips</span>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input placeholder="Search clips…"/>
+    </div>
+
+    <!-- Filters -->
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="filter-row">
+        <span class="filter-label">Show</span>
+        <button class="pill">People</button>
+        <button class="pill">Nature</button>
+        <button class="pill active">All</button>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Format</span>
+        <button class="pill">Land</button>
+        <button class="pill active">Port</button>
+        <button class="pill">All</button>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Status</span>
+        <button class="pill">★ Favs</button>
+        <button class="pill">⚡ HQ</button>
+      </div>
+    </div>
+
+    <!-- Score slider -->
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      <div class="score-row">
+        <span class="score-label">MIN SCORE</span>
+        <span class="score-val">0</span>
+      </div>
+      <input type="range" min="0" max="10" step="0.5" value="0"/>
+    </div>
+
+    <!-- Clip grid -->
+    <div class="clip-grid">
+      <div class="clip-card">
+        <div class="clip-thumb">
+          <div class="score-badge hi">9.2</div>
+          <svg width="24" height="24" fill="none" stroke="#b090d8" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m10 8 6 4-6 4V8z"/></svg>
+        </div>
+        <div class="clip-info">
+          <div class="clip-name">yellow - 4.mov</div>
+          <div class="clip-dur">12.4s</div>
+        </div>
+      </div>
+      <div class="clip-card">
+        <div class="clip-thumb">
+          <div class="score-badge">7.8</div>
+          <svg width="24" height="24" fill="none" stroke="#b090d8" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m10 8 6 4-6 4V8z"/></svg>
+        </div>
+        <div class="clip-info">
+          <div class="clip-name">yellow - 7.mov</div>
+          <div class="clip-dur">8.1s</div>
+        </div>
+      </div>
+      <div class="clip-card">
+        <div class="clip-thumb land">
+          <div class="score-badge hi">8.9</div>
+          <svg width="24" height="24" fill="none" stroke="#9ab890" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m10 8 6 4-6 4V8z"/></svg>
+        </div>
+        <div class="clip-info">
+          <div class="clip-name">yellow - 130.mov</div>
+          <div class="clip-dur">42.9s</div>
+        </div>
+      </div>
+      <div class="clip-card">
+        <div class="clip-thumb">
+          <div class="score-badge">6.3</div>
+          <svg width="24" height="24" fill="none" stroke="#b090d8" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="m10 8 6 4-6 4V8z"/></svg>
+        </div>
+        <div class="clip-info">
+          <div class="clip-name">yellow - 22.mov</div>
+          <div class="clip-dur">5.7s</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Run buttons -->
+    <div class="run-bar">
+      <button class="run-btn librarian">▶ Run Librarian</button>
+      <button class="run-btn scout">☁ Run Scout</button>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+    <div class="center-content">
+      <!-- Log entries -->
+      <div class="log-entry">
+        <span class="agent-badge librarian">Librarian</span>
+        <span class="log-text">Scanning /Desktop/yellow_copy for .mov / .mp4 files…</span>
+        <span class="log-time">14:32</span>
+      </div>
+      <div class="log-entry">
+        <span class="agent-badge librarian">Librarian</span>
+        <span class="log-text">Found 244 clip(s). Starting indexing.</span>
+        <span class="log-time">14:32</span>
+      </div>
+      <div class="log-entry">
+        <span class="agent-badge librarian">Librarian</span>
+        <span class="log-text">[1/244] Indexed yellow - 1.mov — portrait 1080×1920, 23.8s, 12 hero frames.</span>
+        <span class="log-time">14:32</span>
+      </div>
+      <div class="log-entry">
+        <span class="agent-badge scout">Scout</span>
+        <span class="log-text">Pass 1: FFmpeg quality filter on 35 clip(s)…</span>
+        <span class="log-time">14:38</span>
+      </div>
+      <div class="log-entry">
+        <span class="agent-badge scout">Scout</span>
+        <span class="log-text">[3/35] yellow - 100.mov → score 9.2  (stability 9.0  focus 9.5  lighting 9.1) ★ 👤</span>
+        <span class="log-time">14:39</span>
+      </div>
+      <div class="log-entry">
+        <span class="agent-badge colorist">Colorist</span>
+        <span class="log-text">Generating Smart LUT for 8 selected clips…</span>
+        <span class="log-time">14:44</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <span class="panel-title">AI Agents</span>
+
+    <div class="agent-cards">
+
+      <!-- Librarian card -->
+      <div class="agent-card librarian">
+        <div class="agent-card-top">
+          <span class="agent-card-name librarian">Librarian</span>
+          <span class="status-pill done">Done</span>
+        </div>
+        <span class="agent-desc">Indexes and clusters your media library</span>
+      </div>
+
+      <!-- Scout card — running -->
+      <div class="agent-card scout">
+        <div class="agent-card-top">
+          <span class="agent-card-name scout">Scout</span>
+          <span class="status-pill running">● Running</span>
+        </div>
+        <span class="agent-desc">Scores and tags clips with AI vision</span>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+      </div>
+
+      <!-- Colorist card -->
+      <div class="agent-card colorist">
+        <div class="agent-card-top">
+          <span class="agent-card-name colorist">Colorist</span>
+          <span class="status-pill idle">Idle</span>
+        </div>
+        <span class="agent-desc">Generates LUT color grades</span>
+      </div>
+
+      <!-- Architect card -->
+      <div class="agent-card architect">
+        <div class="agent-card-top">
+          <span class="agent-card-name architect">Architect</span>
+          <span class="status-pill idle">Idle</span>
+        </div>
+        <span class="agent-desc">Assembles FCPXML from best clips</span>
+      </div>
+
+    </div>
+
+    <!-- Version Timeline -->
+    <div class="timeline-section">
+      <div class="timeline-title">Version Timeline</div>
+      <div class="commit-row">
+        <div class="commit-dot" style="background:linear-gradient(135deg,#a0d830,#70b010);"></div>
+        <div class="commit-info">
+          <div class="commit-msg">Librarian: indexed 35 clips, 4 scenes</div>
+          <div class="commit-time">2 min ago</div>
+        </div>
+        <div class="commit-synced">✓</div>
+      </div>
+      <div class="commit-row">
+        <div class="commit-dot" style="background:linear-gradient(135deg,#9030d0,#d040b0);"></div>
+        <div class="commit-info">
+          <div class="commit-msg">Scout: scored 28 clips, culled 7</div>
+          <div class="commit-time">8 min ago</div>
+        </div>
+        <div class="commit-synced">✓</div>
+      </div>
+      <div class="commit-row">
+        <div class="commit-dot" style="background:linear-gradient(135deg,#f0a020,#e06010);"></div>
+        <div class="commit-info">
+          <div class="commit-msg">Colorist: generated Smart LUT v3</div>
+          <div class="commit-time">Yesterday</div>
+        </div>
+        <div class="commit-synced">✓</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
